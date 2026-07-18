@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda - Leydi & Jesús</title>
+    
+    <!-- Tailwind CSS para el diseño fluido, responsivo y moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Fuentes clásicas, románticas y minimalistas para la boda -->
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght=0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #55624c; /* Fondo verde sabia elegante */
+            background-image: radial-gradient(#68775e 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .font-serif-elegant {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .font-script {
+            font-family: 'Alex Brush', cursive;
+        }
+
+        /* Ocultar barra de desplazamiento manteniendo la funcionalidad de scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Degradados dorados premium */
+        .gold-border {
+            border-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) 1;
+        }
+        
+        .gold-text {
+            background: linear-gradient(to right, #9a7432, #cfa864, #a87930, #e6ca91, #946c29);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Animaciones para la apertura interactiva del sobre en 3D */
+        @keyframes seal-break {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.2) rotate(15deg); opacity: 0.8; }
+            100% { transform: scale(0) rotate(-45deg); opacity: 0; }
+        }
+        .seal-active {
+            animation: seal-break 0.8s ease-in-out forwards;
+        }
+
+        @keyframes flap-open {
+            0% { transform: rotateX(0deg); z-index: 25; }
+            100% { transform: rotateX(180deg); z-index: 5; }
+        }
+        .flap-active {
+            animation: flap-open 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            transform-origin: top;
+        }
+
+        /* Animación para simular que la invitación se desliza hacia arriba desde el sobre */
+        @keyframes slide-up-card {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .card-slide-active {
+            animation: slide-up-card 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-0 md:p-6 overflow-x-hidden select-none">
+
+    <!-- Contenedor premium centrado y adaptado para simular tarjeta elegante flotante en computadoras y pantalla completa en celulares -->
+    <div id="invitationContainer" class="relative w-full max-w-md h-screen overflow-hidden bg-[#f4f3ef] md:rounded-[32px] md:shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all duration-700 ease-in-out flex flex-col">
+        
+        <!-- REPRODUCTOR DE AUDIO -->
+        <audio id="weddingMusic" loop>
+            <source src="https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-extra-long-11945.mp3" type="audio/mp3">
+        </audio>
+
+        <!-- Pantalla inicial con el sobre cerrado -->
+        <div id="envelopeScreen" class="absolute inset-0 z-40 bg-[#f4f3ef] flex flex-col justify-between p-6 transition-all duration-1000 ease-in-out overflow-y-auto no-scrollbar">
+            
+            <!-- Adornos Botánicos de Eucalipto superiores en la portada -->
+            <div class="w-full flex justify-center mt-4">
+                <svg viewBox="0 0 200 80" class="w-48 opacity-90">
+                    <path d="M 100,0 C 90,20 70,10 60,30 C 55,20 45,25 35,15 C 20,30 30,40 10,45 C 30,55 40,40 60,50 C 70,40 85,45 100,10" fill="#7d8c72" opacity="0.8"/>
+                    <path d="M 100,0 C 110,20 130,10 140,30 C 145,20 155,25 165,15 C 180,30 170,40 190,45 C 170,55 160,40 140,50 C 130,40 115,45 100,10" fill="#607056" opacity="0.8"/>
+                    <path d="M 100,5 C 95,15 85,12 80,22 C 85,25 90,18 100,5 Z" fill="#9db093" opacity="0.9"/>
+                    <path d="M 100,5 C 105,15 115,12 120,22 C 115,25 110,18 100,5 Z" fill="#889c7d" opacity="0.9"/>
+                </svg>
+            </div>
+
+            <!-- Nombres de la Portada -->
+            <div class="text-center space-y-3 z-10">
+                <span class="text-xs uppercase tracking-[0.25em] text-neutral-500 font-medium">Nuestra Boda</span>
+                <!-- Nombres principales Leydi & Jesús -->
+                <h1 class="text-4xl md:text-5xl font-script text-[#55624c] py-2">Leydi & Jesús</h1>
+                <p class="text-sm tracking-[0.15em] text-neutral-600 font-medium">24 • OCTUBRE • 2026</p>
+            </div>
+
+            <!-- El Sobre Interactivo -->
+            <div class="relative w-72 h-44 mx-auto my-6 flex items-center justify-center">
+                <!-- Cuerpo del Sobre -->
+                <div class="absolute inset-0 bg-[#55624c] rounded-lg shadow-xl overflow-hidden border border-[#444f3d]">
+                    <div class="absolute inset-0" style="clip-path: polygon(0 0, 100% 0, 50% 60%); background-color: #495441;"></div>
+                    <div class="absolute inset-0" style="clip-path: polygon(0 0, 45% 100%, 0 100%); background-color: #4f5b47;"></div>
+                    <div class="absolute inset-0" style="clip-path: polygon(100% 0, 100% 100%, 55% 100%); background-color: #4f5b47;"></div>
+                    <div class="absolute inset-0" style="clip-path: polygon(0 100%, 100% 100%, 50% 45%); background-color: #5d6c54; border-top: 1px solid #6b7c62;"></div>
+                </div>
+
+                <!-- Solapa Superior que se abrirá con animación -->
+                <div id="envelopeFlap" class="absolute top-0 left-0 w-full h-[52%] bg-[#444f3d] rounded-t-lg origin-top z-20" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+
+                <!-- Sello de Lacre de Cera Dorado (Botón interactivo de apertura con iniciales actualizadas) -->
+                <button id="waxSeal" onclick="openInvitation()" class="absolute z-30 w-16 h-16 bg-[#e6ca91] rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 transition-all focus:outline-none cursor-pointer border border-[#c2a466]">
+                    <div class="w-14 h-14 rounded-full border-2 border-dashed border-[#a37f37] flex items-center justify-center">
+                        <!-- Iniciales del sello de lacre L&J -->
+                        <span class="font-serif-elegant font-bold text-lg text-[#7c5b1c]">L&J</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Instrucciones de apertura e información de pases -->
+            <div class="text-center space-y-6 mb-4 z-10">
+                <button onclick="openInvitation()" class="inline-flex items-center gap-2 px-6 py-2 border border-[#bfa370] rounded-full text-xs uppercase tracking-widest text-[#7c5b1c] bg-[#faf8f5] shadow-sm hover:bg-[#ebdcae] transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                    </svg>
+                    Haz clic para abrir
+                </button>
+
+                <!-- Tarjeta física de pases -->
+                <div class="bg-white border border-neutral-200 rounded-xl p-4 max-w-xs mx-auto shadow-sm">
+                    <p class="text-[10px] tracking-[0.2em] text-neutral-400 uppercase font-semibold">Hemos reservado</p>
+                    <div class="my-1 flex items-center justify-center gap-3">
+                        <span class="text-neutral-300 text-lg">✦</span>
+                        <!-- Número de pases reservados -->
+                        <div class="w-9 h-9 border-2 border-[#55624c] rounded-lg flex items-center justify-center font-serif-elegant text-xl font-semibold text-[#55624c]">
+                            2
+                        </div>
+                        <span class="text-neutral-300 text-lg">✦</span>
+                    </div>
+                    <p class="text-xs tracking-[0.1em] text-neutral-600 uppercase font-semibold">Lugares en su honor</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invitación Principal (Aparece al abrir el sobre) -->
+        <div id="mainInvitation" class="flex-1 overflow-y-auto no-scrollbar bg-[#fcfbfa] relative hidden opacity-0 transition-opacity duration-1000 ease-in-out">
+            
+            <!-- SECCIÓN: SOBRE ABIERTO (Tal como se ve a partir del segundo 0:04 del video) -->
+            <div class="relative w-full bg-[#55624c] pt-16 pb-20 px-6 text-center shadow-inner overflow-hidden flex flex-col justify-center items-center">
+                <!-- Efecto visual del triángulo interno de la solapa del sobre -->
+                <div class="absolute inset-x-0 top-0 h-10 bg-[#495441]" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+                
+                <!-- Adornos Botánicos de Eucalipto en blanco sutil de fondo -->
+                <div class="absolute top-8 opacity-10 w-48 pointer-events-none">
+                    <svg viewBox="0 0 200 80" class="w-full">
+                        <path d="M 100,0 C 90,20 70,10 60,30 C 55,20 45,25 35,15 C 20,30 30,40 10,45 C 30,55 40,40 60,50 C 70,40 85,45 100,10" fill="#ffffff"/>
+                        <path d="M 100,0 C 110,20 130,10 140,30 C 145,20 155,25 165,15 C 180,30 170,40 190,45 C 170,55 160,40 140,50 C 130,40 115,45 100,10" fill="#ffffff"/>
+                    </svg>
+                </div>
+
+                <!-- Nombres y fecha sobre el fondo verde (idéntico al video) -->
+                <div class="z-10 space-y-4">
+                    <h1 class="text-4xl md:text-5xl font-script text-white tracking-wide py-2 drop-shadow-md">Leydi & Jesús</h1>
+                    <div class="w-16 h-[1px] bg-[#e6ca91]/50 mx-auto"></div>
+                    <p class="text-sm tracking-[0.25em] text-[#e6ca91] font-semibold">24.10.2026</p>
+                </div>
+
+                <!-- Degradado de transición hacia la carta de papel blanca -->
+                <div class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#fcfbfa] to-transparent"></div>
+            </div>
+
+            <!-- Cabecera botánica de bienvenida (Comienzo del papel blanco) -->
+            <div class="relative w-full h-44 bg-[#fcfbfa] flex items-center justify-center overflow-hidden">
+                <!-- Hojas de eucalipto decorativas -->
+                <div class="absolute -top-6 -left-8 w-44 h-44 opacity-80 pointer-events-none">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-[#7d8c72] fill-current">
+                        <path d="M10,10 Q30,20 50,50 T90,90 M20,15 C15,30 30,35 40,25 C30,15 15,20 20,15 M40,30 C30,45 45,50 55,40 C45,30 30,35 40,30 M60,50 C50,65 65,70 75,60 C65,50 50,55 60,50" />
+                    </svg>
+                </div>
+                <div class="absolute -top-6 -right-8 w-44 h-44 opacity-80 pointer-events-none transform scale-x-[-1]">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-[#5d6c54] fill-current">
+                        <path d="M10,10 Q30,20 50,50 T90,90 M20,15 C15,30 30,35 40,25 C30,15 15,20 20,15 M40,30 C30,45 45,50 55,40 C45,30 30,35 40,30 M60,50 C50,65 65,70 75,60 C65,50 50,55 60,50" />
+                    </svg>
+                </div>
+
+                <!-- Monograma Elegante "L & J" -->
+                <div class="z-10 text-center flex flex-col items-center">
+                    <div class="border border-[#bfa370] px-6 py-4 relative bg-white/60 backdrop-blur-sm rounded-lg shadow-sm">
+                        <div class="absolute -top-1.5 -left-1.5 w-3 h-3 border-t border-l border-[#8b6e3c]"></div>
+                        <div class="absolute -top-1.5 -right-1.5 w-3 h-3 border-t border-r border-[#8b6e3c]"></div>
+                        <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b border-l border-[#8b6e3c]"></div>
+                        <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b border-r border-[#8b6e3c]"></div>
+                        <!-- Iniciales del Monograma Leydi & Jesús -->
+                        <span class="font-serif-elegant text-2xl tracking-[0.3em] font-medium text-neutral-800 ml-2">L & J</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección: ¡Nos Casamos! e Imagen Principal -->
+            <div class="px-6 text-center space-y-6">
+                <div class="space-y-2">
+                    <h2 class="font-serif-elegant italic text-2xl text-neutral-800">¡Nos Casamos!</h2>
+                    <p class="text-sm text-neutral-500 italic max-w-xs mx-auto">"No lo creían, pero nuestro día llegó."</p>
+                </div>
+
+                <!-- Imagen Principal Pareja -->
+                <div class="relative mx-auto max-w-sm rounded-2xl overflow-hidden border border-neutral-100 shadow-md aspect-[3/4]">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" 
+                         alt="Leydi y Jesús" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x800/d4dfcd/55624c?text=Leydi+y+Jes%C3%BAs'"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#55624c]/30 to-transparent"></div>
+                </div>
+            </div>
+
+            <!-- Reproductor de Audio Interactivo (Estilo Spotify elegante) -->
+            <div class="my-8 mx-6 bg-[#f5f4ef] rounded-2xl p-4 border border-neutral-200/60 shadow-inner">
+                <p class="text-[10px] uppercase tracking-[0.25em] text-neutral-500 text-center font-medium mb-3">Dale play a nuestra canción</p>
+                
+                <div class="flex items-center gap-4">
+                    <!-- Botón Reproducción -->
+                    <button id="musicToggleBtn" onclick="toggleMusic()" class="w-12 h-12 rounded-full bg-[#55624c] flex items-center justify-center text-white shadow-md active:scale-95 transition-all">
+                        <!-- Play Icon (Oculto inicialmente) -->
+                        <svg id="playIcon" class="hidden h-5 w-5 fill-current ml-1" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        <!-- Pause Icon (Visible) -->
+                        <svg id="pauseIcon" class="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                        </svg>
+                    </button>
+
+                    <!-- Detalles del Track y Barra de Progreso Simulada en tiempo real -->
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center text-xs mb-1">
+                            <span class="font-semibold text-neutral-700">Beautiful Dream (Piano)</span>
+                            <span id="musicTime" class="text-neutral-400">0:00 / 0:00</span>
+                        </div>
+                        <div class="w-full bg-neutral-200 h-1.5 rounded-full overflow-hidden">
+                            <div id="musicProgressBar" class="bg-[#bfa370] h-full w-[0%] transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Texto de Amor y Fecha Oficial de la Boda -->
+            <div class="px-6 text-center space-y-8">
+                <p class="text-sm leading-relaxed text-neutral-600 max-w-sm mx-auto font-serif-elegant italic">
+                    "Nuestra historia continúa... por ello, con el amor que nos une, la bendición de Dios y el apoyo de nuestros padres, uniremos nuestras vidas y queremos que seas parte de este nuevo capítulo."
+                </p>
+
+                <!-- Fecha Destacada en Bloque (Elegante e Idéntica al video de Canva) -->
+                <div class="border-y border-neutral-200 py-6 max-w-xs mx-auto">
+                    <p class="text-xs uppercase tracking-[0.3em] text-neutral-400 font-semibold mb-2">OCTUBRE</p>
+                    <div class="flex items-center justify-center gap-6">
+                        <span class="text-xs uppercase tracking-[0.1em] text-neutral-500 font-medium">Sábado</span>
+                        <span class="font-serif-elegant text-5xl font-bold text-[#5c6c55] border-x border-neutral-300 px-6">24</span>
+                        <span class="text-xs uppercase tracking-[0.1em] text-neutral-500 font-medium">2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Temporizador Regresivo -->
+            <div class="my-8 mx-6 bg-[#55624c] rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white to-transparent"></div>
+                
+                <h3 class="text-xs uppercase tracking-[0.3em] font-medium text-neutral-200 mb-4 z-10 relative">Faltan</h3>
+                
+                <!-- Dígitos del Countdown (Controlados por Javascript al final) -->
+                <div class="grid grid-cols-4 gap-2 z-10 relative max-w-xs mx-auto">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl py-2 px-1">
+                        <span id="days" class="font-serif-elegant text-2xl font-bold">00</span>
+                        <p class="text-[9px] uppercase tracking-wider text-neutral-300 mt-1">Días</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl py-2 px-1">
+                        <span id="hours" class="font-serif-elegant text-2xl font-bold">00</span>
+                        <p class="text-[9px] uppercase tracking-wider text-neutral-300 mt-1">Horas</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl py-2 px-1">
+                        <span id="minutes" class="font-serif-elegant text-2xl font-bold">00</span>
+                        <p class="text-[9px] uppercase tracking-wider text-neutral-300 mt-1">Min</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl py-2 px-1">
+                        <span id="seconds" class="font-serif-elegant text-2xl font-bold">00</span>
+                        <p class="text-[9px] uppercase tracking-wider text-neutral-300 mt-1">Seg</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Imagen Intermedia Decorativa -->
+            <div class="px-6 my-8">
+                <div class="rounded-2xl overflow-hidden shadow-md aspect-[4/3] max-w-sm mx-auto">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" 
+                         alt="Ceremonia" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x450/e3e8df/55624c?text=Leydi+y+Jes%C3%BAs'"/>
+                </div>
+            </div>
+
+            <!-- Detalles de Ceremonia Civil -->
+            <div class="mx-6 p-6 bg-[#f4f3ef] border border-neutral-200/60 rounded-2xl text-center space-y-4 shadow-sm">
+                <!-- Icono elegante de anillos unidos -->
+                <div class="w-12 h-12 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm">
+                    <svg viewBox="0 0 64 64" class="w-7 h-7 text-[#bfa370] fill-none stroke-current" stroke-width="2">
+                        <circle cx="24" cy="36" r="16" />
+                        <circle cx="40" cy="28" r="16" />
+                        <path d="M 24 20 A 16 16 0 0 1 40 28" stroke-dasharray="2 2" />
+                    </svg>
+                </div>
+                
+                <div class="space-y-1">
+                    <p class="text-xs text-neutral-400 tracking-wider">4:30 pm</p>
+                    <h4 class="font-serif-elegant text-lg font-semibold text-neutral-800 uppercase tracking-widest">Ceremonia Civil</h4>
+                    <p class="text-xs text-[#55624c] font-medium">IGLESIA MACARENA</p>
+                    <p class="text-xs text-neutral-500">Miraflores</p>
+                </div>
+
+                <!-- Botón Mapa Interactivo -->
+                <button onclick="showMapModal()" class="w-full py-2.5 bg-[#55624c] text-white rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-[#444f3d] transition-colors shadow-md active:scale-95">
+                    Ver ubicación
+                </button>
+            </div>
+
+            <!-- Sugerencia de Regalos con Código QR Incorporado -->
+            <div class="mx-6 my-8 p-6 bg-white border-2 border-dashed border-neutral-300 rounded-2xl text-center space-y-5">
+                <div class="w-12 h-12 mx-auto rounded-full bg-[#f4f3ef] flex items-center justify-center">
+                    <!-- Icono Caja de Regalo -->
+                    <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#55624c] fill-none stroke-current" stroke-width="2">
+                        <rect x="3" y="9" width="18" height="12" rx="2" />
+                        <path d="M12 9V21M3 9h18" />
+                        <path d="M7.5 9a2.5 2.5 0 0 1 0-5C9 4 11 7 12 9a11 11 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" />
+                    </svg>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-serif-elegant text-base font-semibold text-neutral-800 tracking-widest uppercase">Sugerencia de Regalos</h4>
+                    <p class="text-xs leading-relaxed text-neutral-500 max-w-xs mx-auto">
+                        "El mejor regalo es tu presencia, pero si deseas tener un detalle con nosotros, te invitamos a nuestra mesa de regalos digital:"
+                    </p>
+                </div>
+
+                <!-- Código QR Vectorizado en SVG Puro (Estilo premium con corazón de Leydi & Jesús) -->
+                <div class="p-3 bg-[#fbfbfa] border border-neutral-100 rounded-xl inline-block shadow-inner">
+                    <svg viewBox="0 0 100 100" class="w-32 h-32 mx-auto text-neutral-800 fill-current">
+                        <path d="M0,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z M70,0 h30 v30 h-30 z M80,10 h10 v10 h-10 z M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z" />
+                        <path d="M40,10 h10 v10 h-10 z M55,5 h10 v10 h-10 z M45,25 h15 v10 h-15 z M85,45 h15 v10 h-15 z M50,45 h10 v20 h-10 z M5,45 h15 v15 h-15 z" />
+                        <path d="M75,75 h20 v20 h-20 z M85,85 h10 v10 h-10 z M40,80 h20 v10 h-20 z M45,95 h10 v5 h-10 z M95,65 h5 v10 h-5 z" />
+                        <path d="M45,45 C42,42 38,42 35,45 C32,48 32,52 35,55 L45,65 L55,55 C58,52 58,48 55,45 C52,42 48,42 45,45 Z" fill="#bfa370" />
+                    </svg>
+                </div>
+
+                <p class="text-[10px] text-neutral-400">Escanea o haz clic abajo para acceder</p>
+
+                <button onclick="openGiftRegistry()" class="px-6 py-2 border border-[#bfa370] rounded-full text-xs uppercase tracking-widest text-[#7c5b1c] bg-[#faf8f5] font-semibold hover:bg-[#ebdcae] transition-all">
+                    Ir a Mesa de Regalos
+                </button>
+            </div>
+
+            <!-- Sección final: Sin Niños y Cita Bíblica -->
+            <div class="px-6 text-center space-y-6">
+                <div class="space-y-2 border-t border-neutral-100 pt-8">
+                    <h4 class="text-xs uppercase tracking-[0.2em] font-semibold text-neutral-700">Sin Niños</h4>
+                    <p class="text-xs leading-relaxed text-neutral-500 max-w-xs mx-auto">
+                        "Un evento para adultos está en camino. ¡Así que prepárense para una noche llena de diversión! Dejemos a los niños en casa esta vez."
+                    </p>
+                </div>
+
+                <div class="space-y-4 pt-6 pb-12">
+                    <span class="text-xs uppercase tracking-[0.25em] text-neutral-400 block">Esperamos contar con su presencia</span>
+                    <h2 class="font-script text-4xl text-[#55624c]">¡Muchas Gracias!</h2>
+                    
+                    <div class="w-12 h-[1px] bg-neutral-300 mx-auto my-6"></div>
+
+                    <p class="text-[11px] leading-relaxed text-neutral-400 italic max-w-xs mx-auto px-4">
+                        "El amor nunca se da por vencido, jamás pierde la fe, siempre tiene esperanzas y se mantiene firme en toda circunstancia."<br>
+                        <span class="text-[10px] uppercase font-semibold text-neutral-500 tracking-wider not-italic mt-1 block">— 1 Corintios 13:7</span>
+                    </p>
+                </div>
+
+                <!-- Foto Final Decorativa -->
+                <div class="rounded-2xl overflow-hidden aspect-[4/5] max-w-sm mx-auto shadow-sm pb-4">
+                    <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=600" 
+                         alt="Detalle Final" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x750/f4f3ef/55624c?text=Leydi+&+Jes%C3%BAs'"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal de Mapa de ubicación -->
+    <div id="mapModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl relative">
+            <button onclick="closeMapModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="font-serif-elegant text-lg font-bold text-neutral-800">Ubicación de la Ceremonia</h3>
+            <p class="text-xs text-neutral-500">Iglesia Macarena - Calle de los Almendros 104, Miraflores.</p>
+            
+            <!-- Simulación interactiva del croquis de mapa (SVG) -->
+            <div class="w-full h-48 bg-neutral-100 rounded-2xl relative overflow-hidden border border-neutral-200 flex items-center justify-center">
+                <svg viewBox="0 0 400 200" class="w-full h-full absolute inset-0 opacity-40">
+                    <path d="M0,50 h400 M0,150 h400 M100,0 v200 M300,0 v200" stroke="#bbb" stroke-width="2" />
+                    <circle cx="200" cy="100" r="15" fill="#55624c" opacity="0.3" />
+                </svg>
+                <!-- Pin marcador animado -->
+                <div class="z-10 text-center">
+                    <svg viewBox="0 0 24 24" class="w-10 h-10 text-red-500 fill-current mx-auto animate-bounce">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
+                    <span class="text-[10px] font-bold text-[#55624c] bg-white px-2.5 py-1 rounded-full shadow-sm border border-neutral-100 mt-1 block">Iglesia Macarena</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="simulateGoogleMapsRedirect()" class="flex-1 py-2.5 bg-[#55624c] text-white rounded-xl text-xs uppercase font-semibold hover:bg-[#444f3d] shadow-md">
+                    Abrir en Google Maps
+                </button>
+                <button onclick="closeMapModal()" class="px-4 py-2.5 bg-neutral-100 text-neutral-600 rounded-xl text-xs uppercase font-semibold hover:bg-neutral-200">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Mesa de Regalos Virtual -->
+    <div id="giftModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl relative text-center">
+            <button onclick="closeGiftModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="font-serif-elegant text-lg font-bold text-neutral-800">Mesa de Regalos</h3>
+            <p class="text-xs text-neutral-500">Estás siendo redirigido de forma segura a nuestra lista de bodas en Amazon.</p>
+            
+            <!-- Caja con el código de evento para copiar (actualizado para Leydi y Jesús) -->
+            <div class="p-4 bg-[#fbfbfa] rounded-2xl border border-neutral-100 flex items-center justify-center gap-4">
+                <span class="font-semibold text-neutral-700 text-sm">Código de Evento:</span>
+                <span id="eventCode" class="px-3 py-1 bg-neutral-200 text-[#55624c] rounded-lg font-mono font-bold tracking-wider text-sm select-all">LEY-JES-2026</span>
+            </div>
+
+            <p class="text-[10px] text-neutral-400">Puedes copiar el código arriba para buscar el evento manualmente.</p>
+
+            <button onclick="simulateRegistryRedirect()" class="w-full py-2.5 bg-[#55624c] text-white rounded-xl text-xs uppercase font-semibold hover:bg-[#444f3d] shadow-md">
+                Ir a la tienda virtual
+            </button>
+        </div>
+    </div>
+
+    <!-- Notificación integrada tipo Toast para avisos en pantalla -->
+    <div id="toastNotification" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-neutral-900 text-white px-6 py-3 rounded-full text-xs tracking-wider uppercase font-semibold shadow-2xl z-50 hidden opacity-0 transition-opacity duration-300">
+        Mensaje flotante
+    </div>
+
+    <script>
+        // Referencias a Elementos del DOM
+        const weddingMusic = document.getElementById('weddingMusic');
+        const envelopeScreen = document.getElementById('envelopeScreen');
+        const mainInvitation = document.getElementById('mainInvitation');
+        const waxSeal = document.getElementById('waxSeal');
+        const envelopeFlap = document.getElementById('envelopeFlap');
+        const musicToggleBtn = document.getElementById('musicToggleBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const musicProgressBar = document.getElementById('musicProgressBar');
+        const musicTime = document.getElementById('musicTime');
+        const invitationContainer = document.getElementById('invitationContainer');
+
+        // Función de apertura interactiva del sobre con transición animada exacta al video
+        function openInvitation() {
+            // Activar rotación y efecto roto del lacre
+            waxSeal.classList.add('seal-active');
+            
+            // Retrasar apertura de solapa para que sincronice con la desaparición del sello
+            setTimeout(() => {
+                envelopeFlap.classList.add('flap-active');
+            }, 400);
+
+            // Transición fluida del sobre cerrado al contenido de la invitación
+            setTimeout(() => {
+                // Hacemos que se desvanezca la portada
+                envelopeScreen.classList.add('opacity-0');
+                mainInvitation.classList.remove('hidden');
+                
+                // Cambiar el contenedor para quitar la limitación 'h-screen' y permitir el scroll natural fluido
+                invitationContainer.classList.remove('h-screen', 'overflow-hidden');
+                invitationContainer.classList.add('min-h-screen', 'h-auto');
+                
+                setTimeout(() => {
+                    mainInvitation.classList.add('opacity-100');
+                    envelopeScreen.classList.add('hidden');
+                }, 50);
+
+                // Auto-reproducción de la pista romántica al abrir la carta
+                playMusic();
+            }, 1200);
+        }
+
+        // Intento de reproducción de música
+        function playMusic() {
+            weddingMusic.play().then(() => {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            }).catch(error => {
+                console.log("Interacción requerida por el navegador para reproducir audio: " + error);
+            });
+        }
+
+        // Interruptor de reproducción / pausa de música
+        function toggleMusic() {
+            if (weddingMusic.paused) {
+                weddingMusic.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                weddingMusic.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        }
+
+        // Actualizar la barra de progreso y tiempos de la música
+        weddingMusic.addEventListener('timeupdate', () => {
+            const current = weddingMusic.currentTime;
+            const duration = weddingMusic.duration || 150; // Fallback a 150s
+            const pct = (current / duration) * 100;
+            musicProgressBar.style.width = `${pct}%`;
+
+            // Formateador de minutos y segundos
+            const curMin = Math.floor(current / 60);
+            const curSec = Math.floor(current % 60).toString().padStart(2, '0');
+            const durMin = Math.floor(duration / 60);
+            const durSec = Math.floor(duration % 60).toString().padStart(2, '0');
+
+            musicTime.textContent = `${curMin}:${curSec} / ${durMin}:${durSec}`;
+        });
+
+        // TEMPORIZADOR EN TIEMPO REAL (Establecido para el 24 de Octubre de 2026)
+        const targetDate = new Date('October 24, 2026 16:30:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                document.getElementById('days').innerText = "00";
+                document.getElementById('hours').innerText = "00";
+                document.getElementById('minutes').innerText = "00";
+                document.getElementById('seconds').innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+
+        // Iniciar el temporizador instantáneamente y actualizar cada segundo
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Controladores del Modal de Ubicación
+        function showMapModal() {
+            const modal = document.getElementById('mapModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeMapModal() {
+            const modal = document.getElementById('mapModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Controladores del Modal de Mesa de Regalos
+        function openGiftRegistry() {
+            const modal = document.getElementById('giftModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeGiftModal() {
+            const modal = document.getElementById('giftModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Sistema de Notificación Integrado (Toast)
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            toast.innerText = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.remove('opacity-0');
+                toast.classList.add('opacity-100');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 2500);
+        }
+
+        // Simulación elegante de redirección a Google Maps
+        function simulateGoogleMapsRedirect() {
+            closeMapModal();
+            showToast("Redirigiendo a Iglesia Macarena en Google Maps...");
+            setTimeout(() => {
+                window.open("https://maps.google.com", "_blank");
+            }, 1200);
+        }
+
+        // Simulación elegante de redirección a Mesa de Regalos
+        function simulateRegistryRedirect() {
+            closeGiftModal();
+            showToast("Redirigiendo a la Mesa de Regalos de Leydi & Jesús...");
+            setTimeout(() => {
+                window.open("https://www.amazon.com/wedding", "_blank");
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
