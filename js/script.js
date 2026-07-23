@@ -92,14 +92,17 @@ function openInvitation() {
             // Liberamos el contenedor para permitir el scroll natural SIN saltos bruscos
             invitationContainer.classList.remove('h-screen', 'overflow-hidden');
             invitationContainer.classList.add('min-h-screen', 'h-auto');
+
+            // 🚀 AQUÍ ARRANCAN LOS CARRUSELES:
+            // Justo cuando la invitación es totalmente visible y se puede hacer scroll
+            if (typeof window.iniciarCarruseles === 'function') {
+                window.iniciarCarruseles();
+            }
+
         }, 3000); // Coincide exactamente con el duration-[3000ms] del HTML
 
-
-        
     }, 2000); // Tiempo que se queda la carta arriba antes de iniciar el cambio
 }
-
-
 
 
 // Intento de reproducción de música
@@ -262,23 +265,107 @@ if (btnFotos) {
 
 // Actualiza qué puntito brilla en función de qué foto esté en pantalla
 // Activa el funcionamiento independiente de todos los carruseles de la página
-document.querySelectorAll('.carrusel-contenedor').forEach((contenedor) => {
-  const carrusel = contenedor.querySelector('.carrusel-slider');
-  const dots = contenedor.querySelectorAll('.dot');
+// Se controla el tiempo que se muestra una foto, tiempo de transicion, el tiempo de la
+// primera foto corre a partir de que se abre el sobre y no desde que se abre la pagina
+document.addEventListener('DOMContentLoaded', () => {
+  // Arreglo para guardar los activadores de cada carrusel
+  const activadoresCarrusel = [];
 
-  if (carrusel && dots.length > 0) {
-    carrusel.addEventListener('scroll', () => {
-      // Calcula cuál foto está visible en este carrusel
+  document.querySelectorAll('.carrusel-contenedor').forEach((contenedor) => {
+    const carrusel = contenedor.querySelector('.carrusel-slider');
+    const dots = contenedor.querySelectorAll('.dot');
+
+    if (!carrusel || dots.length === 0) return;
+
+    // CONFIGURACIÓN DE TIEMPOS
+    const TIEMPO_CAMBIO = 9000;        // 9 segundos por foto
+    const DURACION_TRANSICION = 1500;  // 1.5 segundos de desplazamiento
+
+    let autoPlayTimer = null;
+    let isAnimating = false;
+
+    // Desplazamiento suave
+    const desplazarSuave = (elemento, destino, duracion) => {
+      isAnimating = true;
+      elemento.style.scrollSnapType = 'none';
+      elemento.style.scrollBehavior = 'auto';
+
+      const inicio = elemento.scrollLeft;
+      const distancia = destino - inicio;
+      let tiempoInicio = null;
+
+      const animacion = (tiempoActual) => {
+        if (!tiempoInicio) tiempoInicio = tiempoActual;
+        const progreso = tiempoActual - tiempoInicio;
+        const porcentaje = Math.min(progreso / duracion, 1);
+
+        const easing = porcentaje < 0.5
+          ? 2 * porcentaje * porcentaje
+          : 1 - Math.pow(-2 * porcentaje + 2, 2) / 2;
+
+        elemento.scrollLeft = inicio + distancia * easing;
+
+        if (progreso < duracion) {
+          requestAnimationFrame(animacion);
+        } else {
+          elemento.style.scrollSnapType = '';
+          isAnimating = false;
+        }
+      };
+
+      requestAnimationFrame(animacion);
+    };
+
+    // Actualizar puntitos
+    const updateDots = () => {
       const index = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
-
-      // Enciende el puntito correspondiente
       dots.forEach((dot, i) => {
         if (i === index) {
-          dot.classList.replace('opacity-40', 'opacity-100');
+          dot.classList.add('opacity-100');
+          dot.classList.remove('opacity-40');
         } else {
-          dot.classList.replace('opacity-100', 'opacity-40');
+          dot.classList.add('opacity-40');
+          dot.classList.remove('opacity-100');
         }
       });
-    });
-  }
+    };
+
+    carrusel.addEventListener('scroll', updateDots);
+
+    // Cambio de foto
+    const cambiarFotoSiguiente = () => {
+      if (isAnimating) return;
+      const totalFotos = dots.length;
+      const indexActual = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
+      const siguienteIndex = (indexActual + 1) % totalFotos;
+      const destinoScroll = siguienteIndex * carrusel.clientWidth;
+
+      desplazarSuave(carrusel, destinoScroll, DURACION_TRANSICION);
+    };
+
+    const iniciarAutoPlay = () => {
+      if (!autoPlayTimer) {
+        autoPlayTimer = setInterval(cambiarFotoSiguiente, TIEMPO_CAMBIO);
+      }
+    };
+
+    const detenerAutoPlay = () => {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+    };
+
+    // Guardamos la función de inicio para ejecutarla después
+    activadoresCarrusel.push(iniciarAutoPlay);
+
+    // Pausas al tocar/interactuar
+    carrusel.addEventListener('touchstart', detenerAutoPlay, { passive: true });
+    carrusel.addEventListener('touchend', iniciarAutoPlay, { passive: true });
+    carrusel.addEventListener('mouseenter', detenerAutoPlay);
+    carrusel.addEventListener('mouseleave', iniciarAutoPlay);
+  });
+
+  // Función Global para arrancar los carruseles bajo demanda
+  window.iniciarCarruseles = () => {
+    activadoresCarrusel.forEach(iniciar => iniciar());
+  };
 });
