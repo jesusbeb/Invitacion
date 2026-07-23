@@ -232,8 +232,8 @@ function simulateRegistryRedirect() {
 
 // Disponibilidad del boton Subir Fotos durante la fecha indicada
 // Enero es 0, Septiembre es 8, Diciembre es 11.
-const fechaInicioFotos = new Date(2026, 6, 21, 19, 8);  // 2026, 8, 19, 16, 0  -  19 de Septiembre a las 4:00 PM
-const fechaFinFotos    = new Date(2026, 6, 21, 19, 59);  // 2026, 8, 22, 23, 59 -  22 de Septiembre a las 11:59 PM
+const fechaInicioFotos = new Date(2026, 8, 19, 16, 0);  // 2026, 8, 19, 16, 0  -  19 de Septiembre a las 4:00 PM
+const fechaFinFotos    = new Date(2026, 8, 26, 23, 59);  // 2026, 8, 26, 23, 59 -  26 de Septiembre a las 11:59 PM
 const ahora = new Date();
 const btnFotos = document.getElementById('btnSubirFotos');
 
@@ -259,3 +259,26 @@ if (btnFotos) {
         btnFotos.removeAttribute('href'); // Por seguridad, si estaba puesto, lo removemos
     }
 }
+
+// Actualiza qué puntito brilla en función de qué foto esté en pantalla
+// Activa el funcionamiento independiente de todos los carruseles de la página
+document.querySelectorAll('.carrusel-contenedor').forEach((contenedor) => {
+  const carrusel = contenedor.querySelector('.carrusel-slider');
+  const dots = contenedor.querySelectorAll('.dot');
+
+  if (carrusel && dots.length > 0) {
+    carrusel.addEventListener('scroll', () => {
+      // Calcula cuál foto está visible en este carrusel
+      const index = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
+
+      // Enciende el puntito correspondiente
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.replace('opacity-40', 'opacity-100');
+        } else {
+          dot.classList.replace('opacity-100', 'opacity-40');
+        }
+      });
+    });
+  }
+});

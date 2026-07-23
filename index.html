@@ -184,13 +184,48 @@
                         <strong>¡NOS CASAMOS! </strong>Y nos encantaría compartir este día con las personas más especiales para nosotros."</p>
                 </div>
 
-                <!-- Imagen Principal Pareja -->
-                <div class="relative mx-auto max-w-sm rounded-2xl overflow-hidden border border-neutral-100 shadow-md aspect-[3/4]">
-                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" 
-                         alt="Leydi y Jesús" 
-                         class="w-full h-full object-cover"
-                         onerror="this.src='https://placehold.co/600x800/d4dfcd/55624c?text=Leydi+y+Jes%C3%BAs'"/>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#55624c]/30 to-transparent"></div>
+                <!-- Imagen Principal Pareja (Carrusel 1) -->
+                <div class="carrusel-contenedor relative mx-auto max-w-sm rounded-2xl overflow-hidden border border-neutral-100 shadow-md aspect-[3/4]">
+                
+                    <!-- Contenedor Deslizable -->
+                    <div class="carrusel-slider flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                        
+                        <!-- Foto 1 -->
+                        <div class="snap-center shrink-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" 
+                            alt="Leydi y Jesús 1" 
+                            class="w-full h-full object-cover"
+                            onerror="this.src='https://placehold.co/600x800/d4dfcd/55624c?text=Leydi+y+Jes%C3%BAs+1'"/>
+                        </div>
+
+                        <!-- Foto 2 -->
+                        <div class="snap-center shrink-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" 
+                            alt="Leydi y Jesús 2" 
+                            class="w-full h-full object-cover"
+                            onerror="this.src='https://placehold.co/600x800/d4dfcd/55624c?text=Leydi+y+Jes%C3%BAs+2'"/>
+                        </div>
+
+                        <!-- Foto 3 -->
+                        <div class="snap-center shrink-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600" 
+                            alt="Leydi y Jesús 3" 
+                            class="w-full h-full object-cover"
+                            onerror="this.src='https://placehold.co/600x800/d4dfcd/55624c?text=Leydi+y+Jes%C3%BAs+3'"/>
+                        </div>
+
+                    </div>
+
+                    <!-- Capa de degradado con tu verde oliva (#55624c) -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#55624c]/40 to-transparent pointer-events-none"></div>
+
+                    <!-- Puntitos estilo Instagram -->
+                    <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 pointer-events-none z-10">
+                        <span class="dot w-2 h-2 rounded-full bg-white opacity-100 transition-opacity duration-300 shadow"></span>
+                        <span class="dot w-2 h-2 rounded-full bg-white opacity-40 transition-opacity duration-300 shadow"></span>
+                        <span class="dot w-2 h-2 rounded-full bg-white opacity-40 transition-opacity duration-300 shadow"></span>
+                    </div>
+
                 </div>
             </div>
 
@@ -299,13 +334,46 @@
                 </div>
             </div>
 
-            <!-- Imagen Intermedia Decorativa -->
+            <!-- Imagen Intermedia Decorativa (Carrusel 2) -->
             <div class="px-6 my-8">
-                <div class="rounded-2xl overflow-hidden shadow-md aspect-[4/3] max-w-sm mx-auto">
-                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" 
-                         alt="Ceremonia" 
-                         class="w-full h-full object-cover"
-                         onerror="this.src='https://placehold.co/600x450/e3e8df/55624c?text=Leydi+y+Jes%C3%BAs'"/>
+                <div class="carrusel-contenedor relative rounded-2xl overflow-hidden shadow-md aspect-[4/3] max-w-sm mx-auto">
+                   
+                    <!-- Contenedor Deslizable -->
+                    <div class="carrusel-slider flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                    
+                        <!-- Foto 1 -->
+                        <div class="snap-center shrink-0 w-full h-full">
+                            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" 
+                                alt="Ceremonia 1" 
+                                class="w-full h-full object-cover"
+                                onerror="this.src='https://placehold.co/600x450/e3e8df/55624c?text=Ceremonia+1'"/>
+                        </div>
+
+                        <!-- Foto 2 -->
+                        <div class="snap-center shrink-0 w-full h-full">
+                            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=600" 
+                                alt="Ceremonia 2" 
+                                class="w-full h-full object-cover"
+                                onerror="this.src='https://placehold.co/600x450/e3e8df/55624c?text=Ceremonia+2'"/>
+                        </div>
+
+                        <!-- Foto 3 -->
+                        <div class="snap-center shrink-0 w-full h-full">
+                            <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=600" 
+                                alt="Ceremonia 3" 
+                                class="w-full h-full object-cover"
+                                onerror="this.src='https://placehold.co/600x450/e3e8df/55624c?text=Ceremonia+3'"/>
+                        </div>
+
+                    </div>
+
+                    <!-- Puntitos estilo Instagram -->
+                    <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 pointer-events-none z-10">
+                    <span class="dot w-2 h-2 rounded-full bg-white opacity-100 transition-opacity duration-300 shadow"></span>
+                    <span class="dot w-2 h-2 rounded-full bg-white opacity-40 transition-opacity duration-300 shadow"></span>
+                    <span class="dot w-2 h-2 rounded-full bg-white opacity-40 transition-opacity duration-300 shadow"></span>
+                    </div>
+
                 </div>
             </div>
 
