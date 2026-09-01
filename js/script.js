@@ -235,8 +235,8 @@ function simulateRegistryRedirect() {
 
 // Disponibilidad del boton Subir Fotos durante la fecha indicada
 // Enero es 0, Septiembre es 8, Diciembre es 11.
-const fechaInicioFotos = new Date(2026, 8, 19, 16, 0);  // 2026, 8, 19, 16, 0  -  19 de Septiembre a las 4:00 PM
-const fechaFinFotos    = new Date(2026, 8, 26, 23, 59);  // 2026, 8, 26, 23, 59 -  26 de Septiembre a las 11:59 PM
+const fechaInicioFotos = new Date(2026, 7, 31, 21, 50);  // 2026, 8, 19, 16, 0  -  19 de Septiembre a las 4:00 PM
+const fechaFinFotos    = new Date(2026, 7, 31, 22, 30);  // 2026, 8, 26, 23, 59 -  26 de Septiembre a las 11:59 PM
 const ahora = new Date();
 const btnFotos = document.getElementById('btnSubirFotos');
 
